@@ -1,0 +1,39 @@
+include head.pug
+include header.pug
+main
+    section.shop
+        h1 Flourish and Blotts
+        img(src='img/Flourish_&_Blotts.jpg' height='500')
+        p
+            | &Scy;&acy;&mcy;&ycy;&jcy; &icy;&zcy;&vcy;&iecy;&scy;&tcy;&ncy;&ycy;&jcy; &kcy;&ncy;&icy;&zhcy;&ncy;&ycy;&jcy; &mcy;&acy;&gcy;&acy;&zcy;&icy;&ncy; &vcy; &Kcy;&ocy;&scy;&ocy;&mcy; &Pcy;&iecy;&rcy;&iecy;&ucy;&lcy;&kcy;&iecy;. &Scy;&ucy;&shchcy;&iecy;&scy;&tcy;&vcy;&ucy;&iecy;&tcy; &scy; 1654 &gcy;&ocy;&dcy;&acy;. &Ocy;&scy;&ncy;&ocy;&vcy;&acy;&ncy; &vcy;&ocy;&lcy;&shcy;&iecy;&bcy;&ncy;&icy;&kcy;&acy;&mcy;&icy; &Fcy;&lcy;&ocy;&rcy;&icy;&shcy;&iecy;&mcy; &icy;
+            | &Bcy;&lcy;&ocy;&tcy;&tcy;&scy;&ocy;&mcy;.
+    h2 &Kcy;&acy;&tcy;&acy;&lcy;&ocy;&gcy;:
+    form#bookCatalogForm
+        label(for='genre') &Tcy;&icy;&pcy;:
+        select#genre(name='genre')
+            option(value='')
+            option(value='Учебник') &Ucy;&chcy;&iecy;&bcy;&ncy;&icy;&kcy;
+            option(value='Другое') &Dcy;&rcy;&ucy;&gcy;&ocy;&iecy;
+            // добавить другие жанры
+        label(for='year') &Kcy;&ucy;&rcy;&scy;:
+        input#year(type='number' name='year')
+        br
+        label(for='author') &Acy;&vcy;&tcy;&ocy;&rcy;:
+        input#author(type='text' name='author')
+        br
+        label(for='priceFrom') &TScy;&iecy;&ncy;&acy; &ocy;&tcy;:
+        input#priceFrom(type='number' name='priceFrom')
+        br
+        label(for='priceTo') &TScy;&iecy;&ncy;&acy; &dcy;&ocy;:
+        input#priceTo(type='number' name='priceTo')
+        br
+        label(for='availability') &Ncy;&acy;&lcy;&icy;&chcy;&icy;&iecy; &ncy;&acy; &scy;&kcy;&lcy;&acy;&dcy;&iecy;:
+        select#availability(name='availability')
+            option(value='')
+            option(value='есть в наличии') &iecy;&scy;&tcy;&softcy; &vcy; &ncy;&acy;&lcy;&icy;&chcy;&icy;&icy;
+            option(value='нет в наличии') &ncy;&iecy;&tcy; &vcy; &ncy;&acy;&lcy;&icy;&chcy;&icy;&icy;
+        input(type='submit' value='Сгенерировать таблицу')
+    #preloader loading...
+    #resultsTable
+    script(src='scr/table.js')
+include footer.pug

@@ -1,13 +1,36 @@
-import { Get, Controller, Render } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Get, Controller, Render, UseInterceptors } from '@nestjs/common';
+import { AppService, Response } from './app.service';
+import { ServerResponseTimeInterceptor } from './time.interceptor';
 
 @Controller()
+@UseInterceptors(ServerResponseTimeInterceptor)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @Render('index.html')
-  root() {
-    return { message: 'Hello world!' };
+  @Render('index.pug') // <= Название вашего представления
+  getIndexPage() {
+    return { user: 'Hello world!' }; // Модель представления
+  }
+
+  @Get('/index.pug')
+  @Render('index.pug')
+  getIndex() {}
+
+  @Get('/shops.pug')
+  @Render('shops.pug')
+  getShop() {}
+
+  @Get('/photos.pug')
+  @Render('photos.pug')
+  getPhotos() {}
+
+  @Get('/about.pug')
+  @Render('about.pug')
+  getAbout() {}
+
+  @Get()
+  getServerResponse(): Response {
+    return this.appService.getServerResponse();
   }
 }

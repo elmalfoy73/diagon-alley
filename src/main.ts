@@ -5,14 +5,12 @@ import config from './config';
 import { NestFactory } from '@nestjs/core';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(
-    AppModule,
-  );
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
 
-  app.setViewEngine('hbs');
+  app.setViewEngine('pug');
 
   await app.listen(config.port);
 }
