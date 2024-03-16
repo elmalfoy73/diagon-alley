@@ -29,6 +29,10 @@ export class AppController {
   @Render('about.pug')
   getAbout() {}
 
+  @Get('/flourishandBlotts.pug')
+  @Render('flourishandBlotts.pug')
+  getFlourishandBlotts() {}
+
   @Get()
   getServerResponse(): Response {
     return this.appService.getServerResponse();
