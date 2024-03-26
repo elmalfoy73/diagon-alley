@@ -39,3 +39,7 @@ $ npm run test:cov
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+## 3 лаба, схема БД
+![img.png](img.png)
