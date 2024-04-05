@@ -1,5 +1,6 @@
+import * as process from 'process';
+
 export default {
-  port: 8080,
-  DATABASE_URL:
-    'postgres://diagon_alley_5x86_user:HwF9QMeHYnpcALSYWcEcawQauOcplcjy@dpg-cnqp5920si5c73brv3a0-a/diagon_alley_5x86',
+  port: parseInt(process.env.PORT, 10) || 3000,
+  DATABASE_URL: process.env.DATABASE_URL,
 };

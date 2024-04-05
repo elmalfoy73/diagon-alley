@@ -3,85 +3,106 @@ const form = document.getElementById('bookCatalogForm');
 const resultsTable = document.getElementById('resultsTable');
 
 // Добавление слушателя события отправки формы
-form.addEventListener('submit', async function(event) {
-    event.preventDefault(); // Предотвращение перезагрузки страницы
+form.addEventListener('submit', async function (event) {
+  event.preventDefault(); // Предотвращение перезагрузки страницы
 
-    // Получение значений из формы
-    const genre = form.elements.genre.value;
-    const author = form.elements.author.value;
-    const year = form.elements.year.value;
-    const priceFrom = form.elements.priceFrom.value;
-    const priceTo = form.elements.priceTo.value;
-    const availability = form.elements.availability.value;
+  // Получение значений из формы
+  const genre = form.elements.genre.value;
+  const author = form.elements.author.value;
+  const year = form.elements.year.value;
+  const priceFrom = form.elements.priceFrom.value;
+  const priceTo = form.elements.priceTo.value;
+  const availability = form.elements.availability.value;
 
-    // Сохранение значений в локальное хранилище
-    localStorage.setItem('genre', genre);
-    localStorage.setItem('author', author);
-    localStorage.setItem('year', year);
-    localStorage.setItem('priceFrom', priceFrom);
-    localStorage.setItem('priceTo', priceTo);
-    localStorage.setItem('availability', availability);
-    const preloader = document.getElementById('preloader');
-    preloader.style.display = 'block';
-    // Получение данных о книгах с сервера
-    const response = await fetch('http://localhost:8080/books/withAuthors');
-    const books = await response.json(); // Парсинг JSON данных о книгах
-    const table = generateTable(books, genre, author, Number(year), Number(priceFrom), Number(priceTo), availability);
-    preloader.style.display = 'none';
+  // Сохранение значений в локальное хранилище
+  localStorage.setItem('genre', genre);
+  localStorage.setItem('author', author);
+  localStorage.setItem('year', year);
+  localStorage.setItem('priceFrom', priceFrom);
+  localStorage.setItem('priceTo', priceTo);
+  localStorage.setItem('availability', availability);
+  const preloader = document.getElementById('preloader');
+  preloader.style.display = 'block';
+  // Получение данных о книгах с сервера
+  const response = await fetch(
+    'https://diagon-alley-o857.onrender.com/books/withAuthors',
+  );
+  const books = await response.json(); // Парсинг JSON данных о книгах
+  const table = generateTable(
+    books,
+    genre,
+    author,
+    Number(year),
+    Number(priceFrom),
+    Number(priceTo),
+    availability,
+  );
+  preloader.style.display = 'none';
 
-    // Очистка контейнера результатов и добавление сгенерированной таблицы
-    resultsTable.innerHTML = '';
-    resultsTable.appendChild(table);
+  // Очистка контейнера результатов и добавление сгенерированной таблицы
+  resultsTable.innerHTML = '';
+  resultsTable.appendChild(table);
 });
 
 // Загрузка значений из локального хранилища при загрузке страницы
-window.onload = function() {
-    form.elements.genre.value = localStorage.getItem('genre');
-    form.elements.author.value = localStorage.getItem('author');
-    form.elements.year.value = localStorage.getItem('year');
-    form.elements.priceFrom.value = localStorage.getItem('priceFrom');
-    form.elements.priceTo.value = localStorage.getItem('priceTo');
-    form.elements.availability.value = localStorage.getItem('availability');
+window.onload = function () {
+  form.elements.genre.value = localStorage.getItem('genre');
+  form.elements.author.value = localStorage.getItem('author');
+  form.elements.year.value = localStorage.getItem('year');
+  form.elements.priceFrom.value = localStorage.getItem('priceFrom');
+  form.elements.priceTo.value = localStorage.getItem('priceTo');
+  form.elements.availability.value = localStorage.getItem('availability');
 };
 
 // Функция для генерации таблицы на основе введенных параметров
-function generateTable(books, genre, author, year, minPrice, maxPrice, availability) {
+function generateTable(
+  books,
+  genre,
+  author,
+  year,
+  minPrice,
+  maxPrice,
+  availability,
+) {
+  const filteredBooks = books.filter((book) => {
+    return (
+      (genre === '' || book.type === genre) &&
+      (!year || book.year === year) &&
+      (author === '' ||
+        book.author.firstName.includes(author) ||
+        book.author.lastName.includes(author)) &&
+      (!minPrice || book.price >= minPrice) &&
+      (!maxPrice || book.price <= maxPrice) &&
+      (availability === '' ||
+        (availability === 'есть в наличии' && book.availability) ||
+        (availability === 'нет в наличии' && !book.availability))
+    );
+  });
 
-    const filteredBooks = books.filter(book => {
-        return (
-          (genre === "" || book.type === genre) &&
-          (!year || book.year === year) &&
-          (author === "" || book.author.firstName.includes(author) || book.author.lastName.includes(author)) &&
-          (!minPrice || book.price >= minPrice) &&
-          (!maxPrice || book.price <= maxPrice) &&
-          ((availability === "") || (availability === "есть в наличии" && book.availability) || (availability === "нет в наличии" && !book.availability))
-        );
-    });
+  const table = document.createElement('table');
+  const headerRow = table.insertRow();
+  addCell(headerRow, 'Тип');
+  addCell(headerRow, 'Курс');
+  addCell(headerRow, 'Название');
+  addCell(headerRow, 'Автор');
+  addCell(headerRow, 'Цена');
+  addCell(headerRow, 'Наличие');
 
-    const table = document.createElement('table');
-    const headerRow = table.insertRow();
-    addCell(headerRow, "Тип");
-    addCell(headerRow, "Курс");
-    addCell(headerRow, "Название");
-    addCell(headerRow, "Автор");
-    addCell(headerRow, "Цена");
-    addCell(headerRow, "Наличие");
+  filteredBooks.forEach((book) => {
+    const row = table.insertRow();
+    addCell(row, book.type);
+    addCell(row, book.year === null ? ' ' : book.year);
+    addCell(row, book.name);
+    addCell(row, book.author.firstName + ' ' + book.author.lastName);
+    addCell(row, book.price);
+    addCell(row, book.availability ? 'есть в наличии' : 'нет в наличии');
+  });
 
-    filteredBooks.forEach(book => {
-        const row = table.insertRow();
-        addCell(row, book.type);
-        addCell(row, (book.year === null) ? " " : book.year);
-        addCell(row, book.name);
-        addCell(row, book.author.firstName + " " + book.author.lastName);
-        addCell(row, book.price);
-        addCell(row, book.availability ? "есть в наличии" : "нет в наличии");
-    });
-
-    return table;
+  return table;
 }
 
 function addCell(row, text) {
-    const cell = row.insertCell();
-    const textNode = document.createTextNode(text);
-    cell.appendChild(textNode);
+  const cell = row.insertCell();
+  const textNode = document.createTextNode(text);
+  cell.appendChild(textNode);
 }
