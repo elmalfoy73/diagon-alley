@@ -8,28 +8,28 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @Render('index.pug') // <= Название вашего представления
+  @Render('index') // <= Название вашего представления
   getIndexPage() {
     return { user: 'Hello world!' }; // Модель представления
   }
 
-  @Get('/index.pug')
+  @Get('/index')
   @Render('index.pug')
   getIndex() {}
 
-  @Get('/shops.pug')
+  @Get('/shops')
   @Render('shops.pug')
   getShop() {}
 
-  @Get('/photos.pug')
+  @Get('/photos')
   @Render('photos.pug')
   getPhotos() {}
 
-  @Get('/about.pug')
+  @Get('/about')
   @Render('about.pug')
   getAbout() {}
 
-  @Get('/flourishandBlotts.pug')
+  @Get('/flourishandBlotts')
   @Render('flourishandBlotts.pug')
   getFlourishandBlotts() {}
 

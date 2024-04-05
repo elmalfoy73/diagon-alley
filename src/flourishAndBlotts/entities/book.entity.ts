@@ -1,29 +1,33 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Author } from './author.entity';
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Book {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   name: string;
 
+  @ApiProperty()
   @Column()
-  genre: string;
+  type: string;
 
   @ManyToOne(() => Author, (author) => author.books)
   author: Author;
 
-  @Column()
+  @ApiProperty()
+  @Column({ nullable: true })
   year: number;
 
-  @Column()
-  type: string;
-
+  @ApiProperty()
   @Column()
   price: number;
 
+  @ApiProperty()
   @Column()
   availability: boolean;
 }

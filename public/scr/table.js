@@ -24,7 +24,7 @@ form.addEventListener('submit', async function(event) {
     const preloader = document.getElementById('preloader');
     preloader.style.display = 'block';
     // Получение данных о книгах с сервера
-    const response = await fetch('https://retoolapi.dev/fW96ZD/books/');
+    const response = await fetch('http://localhost:8080/books/withAuthors');
     const books = await response.json(); // Парсинг JSON данных о книгах
     const table = generateTable(books, genre, author, Number(year), Number(priceFrom), Number(priceTo), availability);
     preloader.style.display = 'none';
@@ -49,12 +49,12 @@ function generateTable(books, genre, author, year, minPrice, maxPrice, availabil
 
     const filteredBooks = books.filter(book => {
         return (
-            (genre === "" || book.genre === genre) &&
-            (!year || book.year === year) &&
-            (author === "" || book.author.includes(author)) &&
-            (!minPrice || book.price >= minPrice) &&
-            (!maxPrice || book.price <= maxPrice) &&
-            ((availability === "") || (availability === "есть в наличии" && book.availability) || (availability === "нет в наличии" && !book.availability))
+          (genre === "" || book.type === genre) &&
+          (!year || book.year === year) &&
+          (author === "" || book.author.firstName.includes(author) || book.author.lastName.includes(author)) &&
+          (!minPrice || book.price >= minPrice) &&
+          (!maxPrice || book.price <= maxPrice) &&
+          ((availability === "") || (availability === "есть в наличии" && book.availability) || (availability === "нет в наличии" && !book.availability))
         );
     });
 
@@ -69,10 +69,10 @@ function generateTable(books, genre, author, year, minPrice, maxPrice, availabil
 
     filteredBooks.forEach(book => {
         const row = table.insertRow();
-        addCell(row, book.genre);
-        addCell(row, book.year);
-        addCell(row, book.title);
-        addCell(row, book.author);
+        addCell(row, book.type);
+        addCell(row, (book.year === null) ? " " : book.year);
+        addCell(row, book.name);
+        addCell(row, book.author.firstName + " " + book.author.lastName);
         addCell(row, book.price);
         addCell(row, book.availability ? "есть в наличии" : "нет в наличии");
     });

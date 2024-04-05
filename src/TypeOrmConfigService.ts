@@ -2,7 +2,7 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { Author } from './flourishAndBlotts/entities/author.entity';
 import { Book } from './flourishAndBlotts/entities/book.entity';
 import { Client } from './wizards/entities/client.entity';
-import { Shop } from './shops/entities/shop.entity';
+import { Shop } from './shops/shop.entity';
 import { ShopOwner } from './wizards/entities/shopOwner.entity';
 
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
