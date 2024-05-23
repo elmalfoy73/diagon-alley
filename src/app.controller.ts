@@ -29,6 +29,10 @@ export class AppController {
   @Render('about.pug')
   getAbout() {}
 
+  @Get('/chat')
+  @Render('chat.pug')
+  getChat() {}
+
   @Get('/flourishandBlotts')
   @Render('flourishandBlotts.pug')
   getFlourishandBlotts() {}

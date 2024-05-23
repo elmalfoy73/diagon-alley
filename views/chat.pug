@@ -1,0 +1,9 @@
+include head.pug
+include header.pug
+main
+    ul#messages
+    form#form(action='')
+        input#input(autocomplete='off')
+        button Send
+    script(src="/socket.io/socket.io.js")
+    script(src="scr/chat.js")

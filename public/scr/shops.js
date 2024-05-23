@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-  const response = await fetch('https://diagon-alley-o857.onrender.com/shop');
+  const response = await fetch('http://localhost:8080/shop');
   const shops = await response.json();
 
   const TheLeakyCauldron = document.querySelector('#TheLeakyCauldron');

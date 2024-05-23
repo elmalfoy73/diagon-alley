@@ -25,7 +25,7 @@ form.addEventListener('submit', async function (event) {
   preloader.style.display = 'block';
   // Получение данных о книгах с сервера
   const response = await fetch(
-    'https://diagon-alley-o857.onrender.com/books/withAuthors',
+    'http://localhost:8080/books/withAuthors',
   );
   const books = await response.json(); // Парсинг JSON данных о книгах
   const table = generateTable(
