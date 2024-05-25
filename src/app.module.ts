@@ -12,6 +12,8 @@ import { shopOwnerModule } from "./wizards/modules/shopOwner.module";
 import { ChatGateway } from "./chat.gateway";
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { APP_GUARD } from "@nestjs/core";
 
 @Module({
   imports: [
@@ -19,10 +21,16 @@ import { AuthModule } from "./auth/auth.module";
       useClass: TypeOrmConfigService,
     }), ConfigModule.forRoot({
       isGlobal: true,
-    }), AuthorModule, BookModule, ShopModule, ClientModule, shopOwnerModule, AuthModule
+    }), ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 10,
+    }]), AuthorModule, BookModule, ShopModule, ClientModule, shopOwnerModule, AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService, ChatGateway],
+  providers: [AppService, ChatGateway, {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  }],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
